@@ -48,11 +48,18 @@ def GCD(x,y):
         x,y = y,x%y
     return abs(x)
 
-t = int(input())
-while t!=0:
-    print(GCD(15 ,3))
-    
-    t-=1
+def LCM(x,y):
+    return x*y//gcd(x,y)
+
+
+
+if __name__ == "__main__":
+    t = int(input())
+    while t!=0:
+        print(GCD(15 ,3))
+        print(LCM(15,12))
+        
+        t-=1
 
 
 
