@@ -92,17 +92,72 @@ class Triangle_1:
         return max(side_ab, side_bc, side_ca)*2<(side_ab+side_bc+side_ca)
     
     def perimeter(self):
-        p = self.a.distance(self.b) + self.b.distance(self.c) + self.c.distance(self.a)
-        return "{:.3f}".format(p) if self.is_valid() else "INVALID"
+        side_ab = self.a.distance(self.b)
+        side_bc = self.b.distance(self.c)
+        side_ca = self.c.distance(self.a)
+        p = side_ab + side_bc + side_ca 
+        s = sqrt(p*(p - 2*side_ab)*(p - 2*side_bc)*(p - 2*side_ca))/4
+        return "{:.2f}".format(s) if self.is_valid() else "INVALID"
     
-a = []
+    
+class complex_number:
+    def __init__(self,real,imag) -> None:
+        self.real = int(real)
+        self.imag = int(imag)
+        self.a = "{} + {}i".format(self.real,self.imag)
+        pass
+    
+    def add(self,other):
+        return complex_number(self.real + other.real, self.imag + other.imag )
+    
+    def mul(self,other):
+        return complex_number(self.real * other.real - self.imag * other.imag, self.real * other.imag + self.imag * other.real)   
+
+
+class Student:
+    def __init__(self,name,birthdate,grade) -> None:
+        self.name = str(name)
+        self.birthdate = str(birthdate)
+        self.grade = grade
+        self.sum_grade = float(grade[0]) +float(grade[1]) + float(grade[2])
+        if len(self.birthdate) < 10:
+            if self.birthdate[2] != "/": self.birthdate = "0"+ birthdate
+            if self.birthdate[5] != "/": self.birthdate = birthdate[:3] +"0"+birthdate[3:]
+        pass
+    
+    def print(self):
+        print("{} {} {:.1f}".format(self.name,self.birthdate,self.sum_grade))
+
+
+class RainfallStation:
+    def __init__(self,id, name, duration, rainfall_amount ) -> None:
+        self.id = id
+        self.name = name
+        self.duration = round(duration/60,10)
+        self.average_hourly_rainfall = round(rainfall_amount/ self.duration,2)
+        pass
+    
+    
+    
+dict_station = {}
 t = int(input())
+
 for x in range(t):
-    # a.append([float(i) for i in input().split()])
-    a += [float(i) for i in input().split()]
-    
-i = 0
-for index in range(t):
-    triagle = Triangle_1(Point_2(a[i], a[i+1]), Point_2(a[i+2], a[i+3]), Point_2(a[i+4], a[i+5]))
-    print(triagle.perimeter())
-    i += 6
+    name = input()
+    start = input()
+    end = input()
+    amt = int(input())
+    duration = 60 - int(start[-2:]) + int(end[-2:]) + int(end[:2]) - int(start[:2]) -1
+    id = "T0{}".format(len(dict_station)+1) 
+    if name not in dict_station.keys() :
+        dict_station[name] = [ id , name, duration, amt]
+    else:
+        dict_station[name][2] += duration
+        dict_station[name][3] += amt
+
+# print(dict_station)
+for st in dict_station.values() :
+    s = RainfallStation(st[0],st[1],st[2],st[3])
+    print( "{} {} {:.2f}".format(s.id, s.name,s.average_hourly_rainfall))
+    # print(st[2],st[3])
+
